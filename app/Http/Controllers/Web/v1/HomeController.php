@@ -22,7 +22,6 @@ class HomeController extends Controller
     public function index()
     {
         try {
-            //        $chess = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,1,0],[0,0,0,0,0],[0,0,0,0,0]];
             $chess = self::generateChessBoard();
 
             if (self::placeQueens($chess, 0) == false){
@@ -31,12 +30,7 @@ class HomeController extends Controller
             }
 
             $chessBoard = self::printChessBoard($chess);
-//            echo "<pre/>";
             return ApiResponseHandler::success($chessBoard['board'], 'Success');
-//            echo "<br/>";
-//            echo "<br/>";
-//            echo "<br/>";
-//            return $chessBoard['placements'];
         } catch (\Exception $e) {
 //            AppException::log($e);
             return ApiResponseHandler::failure(__('messages.general.failed'), $e->getMessage());
@@ -75,32 +69,6 @@ class HomeController extends Controller
         return $arr;
     }
 
-    public function printChessBoard(&$chess)
-    {
-        //Print the final answer
-//        for ($i = 0; $i < self::NumberOfQueen; ++$i) {
-//            for ($j = 0; $j < self::NumberOfQueen; ++$j)
-//                echo $chess[$i][$j] . " ";
-//
-//            echo "<br/>";
-//        }
-        $board = [];
-        $placement = '';
-        //Print the final answer
-        for ($i = 0; $i < self::NumberOfQueen; ++$i) {
-            for ($j = 0; $j < self::NumberOfQueen; ++$j){
-                $board[$i][$j] = $chess[$i][$j];
-                $placement .= $chess[$i][$j] . " ";
-            }
-
-            $placement .= "<br/>";
-        }
-        return [
-            'board' => $board,
-            'placements' => $placement
-        ];
-    }
-
     public function checkForPossibleCombinations(&$chess, $row, $col)
     {
         //Navigate through tree and check conditions
@@ -132,5 +100,25 @@ class HomeController extends Controller
 
         return true;
     }
+
+    public function printChessBoard(&$chess)
+    {
+        $board = [];
+        $placement = '';
+        //Print the final answer
+        for ($i = 0; $i < self::NumberOfQueen; ++$i) {
+            for ($j = 0; $j < self::NumberOfQueen; ++$j){
+                $board[$i][$j] = $chess[$i][$j];
+                $placement .= $chess[$i][$j] . " ";
+            }
+
+            $placement .= "<br/>";
+        }
+        return [
+            'board' => $board,
+            'placements' => $placement
+        ];
+    }
+
 
 }
