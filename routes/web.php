@@ -14,5 +14,9 @@ use App\Http\Controllers\Web\v1\HomeController;
 |
 */
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
+});
+
+Route::get('/kanoodle', function () {
+    return view('kanoodle');
 });

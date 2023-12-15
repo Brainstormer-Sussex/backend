@@ -12,8 +12,17 @@ use App\Http\Controllers\Web\v1\HomeController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', function () {
-    return view('welcome');
-});
+
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+
+Route::get('/', function () {
+    return view('home');
+});
+Route::get('/kanoodle', function () {
+    return view('kanoodle');
+});

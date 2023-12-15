@@ -44,7 +44,7 @@ class PuzzleController extends Controller
                 'allSolutions' => $solvedPuzzle
             ];
             if (empty($solutionsForDefinedRowAndCol)) {
-                if (!empty($solvedPuzzle)) {
+                if (!empty($solvedPuzzle) && $solvedPuzzle != [[]]) {
                     $errMsg = "Possible combinations exists. But not for this combination try again with a different combination instead.";
                 } else {
                     $result = [];
@@ -73,6 +73,7 @@ class PuzzleController extends Controller
     private function placeQueen(&$chessboard, $colIndex, &$result)
     {
         if ($colIndex == count($chessboard)) {
+            // If the current column index is equal to the length of the chessboard, it means all queens have been successfully placed
             $this->addResult($chessboard, $result);
         } else {
             for ($rowIndex = 0; $rowIndex < count($chessboard); $rowIndex++) {
@@ -88,14 +89,17 @@ class PuzzleController extends Controller
     private function isPlaceValid($chessboard, $rowIndex, $colIndex)
     {
         for ($i = 0; $i < $colIndex; $i++) {
+            // check for queen is same col
             if ($chessboard[$rowIndex][$i] == 1)
                 return false;
         }
         for ($i = $rowIndex, $j = $colIndex; $i >= 0 && $j >= 0; $i--, $j--) {
+            // check for queen in upper-right diagonal
             if ($chessboard[$i][$j] == 1)
                 return false;
         }
         for ($i = $rowIndex, $j = $colIndex; $i < count($chessboard) && $j >= 0; $i++, $j--) {
+            // check for queen in upper-left diagonal
             if ($chessboard[$i][$j] == 1)
                 return false;
         }
@@ -117,7 +121,7 @@ class PuzzleController extends Controller
     {
         $result = [];
         foreach ($solvedPuzzle as $object) {
-            if (array_key_exists($col, $object[$row])) {
+            if (!empty($object) && array_key_exists($col, $object[$row])) {
                 if ($object[$row][$col] == 1) {
                     $result[] = $object;
                     continue;
